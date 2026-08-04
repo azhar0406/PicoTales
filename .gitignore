@@ -1,0 +1,7 @@
+build/
+tinysr/
+tinysr_data/
+__pycache__/
+*.wav
+*.raw
+.DS_Store

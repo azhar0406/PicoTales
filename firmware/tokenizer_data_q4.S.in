@@ -1,0 +1,7 @@
+.section .rodata
+.align 4
+.global tokenizer_data_start
+.global tokenizer_data_end
+tokenizer_data_start:
+.incbin "@TOKENIZER_BIN_ABS@"
+tokenizer_data_end:

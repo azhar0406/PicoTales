@@ -1,0 +1,7 @@
+.section .rodata
+.align 4
+.global model_data_start
+.global model_data_end
+model_data_start:
+.incbin "@MODEL_BIN_ABS@"
+model_data_end:

@@ -1,0 +1,23 @@
+;
+; inmp441.pio — I2S master RX for the INMP441 MEMS microphone.
+;
+; side-set bit0 = SCK (BCLK), bit1 = WS (LRCLK). IN pin 0 = SD.
+; 64 SCK per frame (32 left + 32 right), 2 PIO cycles per SCK period.
+; At 125 MHz sys clock, clkdiv 61 + 9/256 gives BCLK = 1.024 MHz -> fs = 16 kHz.
+; Autopush every 32 bits: FIFO words alternate between the two channel halves.
+;
+.program inmp441
+.side_set 2
+
+.wrap_target
+    set x, 30       side 0b00   ; WS=0 half begins, SCK low
+l1:
+    in pins, 1      side 0b01   ; SCK high: sample bit
+    jmp x-- l1      side 0b00   ; SCK low
+    in pins, 1      side 0b01   ; 32nd bit of this half
+    set x, 30       side 0b10   ; WS=1 half begins (WS changes on SCK falling edge)
+r1:
+    in pins, 1      side 0b11
+    jmp x-- r1      side 0b10
+    in pins, 1      side 0b11   ; 32nd bit; wrap flips WS back low on falling edge
+.wrap

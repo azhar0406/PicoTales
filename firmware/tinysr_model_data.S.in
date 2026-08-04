@@ -1,0 +1,7 @@
+.section .rodata
+.align 4
+.global tinysr_model_start
+.global tinysr_model_end
+tinysr_model_start:
+.incbin "@TINYSR_MODEL_ABS@"
+tinysr_model_end:
